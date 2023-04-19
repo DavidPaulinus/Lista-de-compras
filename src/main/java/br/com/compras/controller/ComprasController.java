@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.compras.model.compra.DTO.CompraDetalharDTO;
 import br.com.compras.model.item.DTO.ListaItensDTO;
 import br.com.compras.service.ComprasService;
 import br.com.compras.service.ItensService;
@@ -40,7 +41,10 @@ public class ComprasController {
 		
 		return ResponseEntity.ok(itens.map(ListaItensDTO::new));
 	}
-	
+	@GetMapping
+	public ResponseEntity<CompraDetalharDTO> criarCompra() {
+		return ResponseEntity.ok(new CompraDetalharDTO(servC.crirarCompra()));
+	}
 	@PostMapping("/add/{id}")
 	@Transactional
 	public ResponseEntity<Page<ListaItensDTO>> adicionarAoCarrinho(@PathVariable Long id){
@@ -56,5 +60,6 @@ public class ComprasController {
 		 
 		 return ResponseEntity.ok(itens.map(ListaItensDTO::new));
 	}
+	
 	
 }

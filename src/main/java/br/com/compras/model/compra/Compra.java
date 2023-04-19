@@ -1,5 +1,6 @@
 package br.com.compras.model.compra;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.compras.model.item.Item;
@@ -26,4 +27,14 @@ public class Compra {
 	private List<Item> carrinho;
 	@OneToMany
 	private List<Item> comprado;
+	
+	public Compra(Object object, Object object2) {
+		carrinho = new ArrayList<>();
+		comprado = new ArrayList<>();
+	}
+
+	public Compra(ArrayList<Item> arrayList) {
+		carrinho = arrayList;
+		comprado = arrayList;
+	}
 }
