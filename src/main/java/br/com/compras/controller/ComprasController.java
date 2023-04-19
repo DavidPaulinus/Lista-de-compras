@@ -3,6 +3,7 @@ package br.com.compras.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,5 +62,14 @@ public class ComprasController {
 		 
 		 return ResponseEntity.ok(itens.map(ListaItensDTO::new));
 	}
+	
+	@DeleteMapping("/carrinho/remove/{id}")
+	@Transactional
+	public ResponseEntity<Page<ListaItensDTO>> removerDoCarrinho(@PathVariable Long id, @PathParam("item") Long item){
+		var itens = servC.removerCarrinho(id,item);
+		
+		return ResponseEntity.ok(itens.map(ListaItensDTO::new));
+	}
+	
 	
 }
