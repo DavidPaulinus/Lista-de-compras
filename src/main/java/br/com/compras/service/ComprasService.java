@@ -53,6 +53,18 @@ public class ComprasService {
 		return new PageImpl<>(detalharCompra(id));
 	}
 
+	public Page<Item> removerCarrinho(Long id, Long itemId) {
+		var itens = detalharCarrinho(id);
+		
+		for(int i = 0; i < itens.size(); i++) {
+			if(itens.get(i).getId() == itemId) {
+				itens.remove(i);
+			}
+		}
+		
+		return new PageImpl<>(itens);
+	}
+
 	private List<Item> detalharCarrinho(Long id) {
 		return repo.getReferenceById(id).getCarrinho();
 	}
