@@ -17,5 +17,9 @@ public class ItensService {
 	public Page<Item> listarItens() {
 		return new PageImpl<Item>(repo.findAll());
 	}
+	
+	public Item detalharItem(Long id) {
+		return repo.getReferenceById(id);
+	}
 
 }
