@@ -1,0 +1,1 @@
+ALTER TABLE tb_itens ADD COLUMN(comprado tinyint);
