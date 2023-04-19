@@ -9,7 +9,7 @@ import br.com.compras.model.compra.Compra;
 @Repository
 public interface ComprasRepository extends JpaRepository<Compra, Long> {
 
-	@Query("DELETE FROM Compra c.carrinho WHERE c.id = :id")
+	@Query("DELETE FROM Compra c WHERE c.id = :id")
 	void removeFromCarrinhoById(Long id);
 
 }

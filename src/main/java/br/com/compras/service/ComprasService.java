@@ -1,5 +1,6 @@
 package br.com.compras.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
+import br.com.compras.model.compra.Compra;
 import br.com.compras.model.item.Item;
 import br.com.compras.service.util.repository.ComprasRepository;
 
@@ -33,7 +35,11 @@ public class ComprasService {
 	}
 
 	public Page<Item> comprar(Long id) {
-		detalharCompra(id).addAll(detalharCarrinho(id));
+		var compra = detalharCompra(id);
+		
+		compra.addAll(detalharCarrinho(id));
+		compra.forEach(x -> x.comprado());
+		
 		repo.removeFromCarrinhoById(id);
 		
 		return new PageImpl<>(detalharCompra(id));
@@ -45,6 +51,12 @@ public class ComprasService {
 	
 	private List<Item> detalharCompra(Long id) {
 		return repo.getReferenceById(id).getComprado();
+	}
+
+	public Compra crirarCompra() {
+		var compra = new Compra(new ArrayList<Item>()); 
+		repo.save(compra);
+		return compra;
 	}
 	
 }
