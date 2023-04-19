@@ -18,7 +18,14 @@ public class ComprasService {
 	private ComprasRepository repo;
 	@Autowired
 	private ItensService serv;
-	
+
+	public Compra crirarCompra() {
+		var compra = new Compra(new ArrayList<Item>());
+		repo.save(compra);
+
+		return compra;
+	}
+
 	public Page<Item> listarItensCarinho(Long id) {
 		return new PageImpl<>(detalharCarrinho(id));
 	}
@@ -30,33 +37,28 @@ public class ComprasService {
 	public Page<Item> addCarrinho(Long id, Long idItem) {
 		var itens = detalharCarrinho(id);
 		itens.add(serv.detalharItem(idItem));
-		
+
 		return new PageImpl<>(itens);
 	}
 
 	public Page<Item> comprar(Long id) {
 		var compra = detalharCompra(id);
-		
+		var carrinho = detalharCarrinho(id);
+
 		compra.addAll(detalharCarrinho(id));
 		compra.forEach(x -> x.comprado());
-		
-		repo.removeFromCarrinhoById(id);
-		
+
+		carrinho.removeAll(carrinho);
+
 		return new PageImpl<>(detalharCompra(id));
 	}
 
 	private List<Item> detalharCarrinho(Long id) {
 		return repo.getReferenceById(id).getCarrinho();
 	}
-	
+
 	private List<Item> detalharCompra(Long id) {
 		return repo.getReferenceById(id).getComprado();
 	}
 
-	public Compra crirarCompra() {
-		var compra = new Compra(new ArrayList<Item>()); 
-		repo.save(compra);
-		return compra;
-	}
-	
 }

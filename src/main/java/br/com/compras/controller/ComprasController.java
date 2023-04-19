@@ -14,6 +14,7 @@ import br.com.compras.model.item.DTO.ListaItensDTO;
 import br.com.compras.service.ComprasService;
 import br.com.compras.service.ItensService;
 import jakarta.transaction.Transactional;
+import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/compras")
@@ -29,15 +30,15 @@ public class ComprasController {
 		
 		return ResponseEntity.ok(itens.map(ListaItensDTO::new));
 	}
-	@GetMapping("/carrinho")
-	public ResponseEntity<Page<ListaItensDTO>> listarItensCarrinho() {
-		var itens = servC.listarItensCarinho(1l);
+	@GetMapping("/carrinho/{id}")
+	public ResponseEntity<Page<ListaItensDTO>> listarItensCarrinho(@PathVariable Long id) {
+		var itens = servC.listarItensCarinho(id);
 		
 		return ResponseEntity.ok(itens.map(ListaItensDTO::new));
 	}
-	@GetMapping("/compras")
-	public ResponseEntity<Page<ListaItensDTO>> listarCompras(){
-		var itens = servC.listarCompras(1l);
+	@GetMapping("/compras/{id}")
+	public ResponseEntity<Page<ListaItensDTO>> listarCompras(@PathVariable Long id){
+		var itens = servC.listarCompras(id);
 		
 		return ResponseEntity.ok(itens.map(ListaItensDTO::new));
 	}
@@ -45,21 +46,20 @@ public class ComprasController {
 	public ResponseEntity<CompraDetalharDTO> criarCompra() {
 		return ResponseEntity.ok(new CompraDetalharDTO(servC.crirarCompra()));
 	}
+	
 	@PostMapping("/add/{id}")
 	@Transactional
-	public ResponseEntity<Page<ListaItensDTO>> adicionarAoCarrinho(@PathVariable Long id){
-		 var itens = servC.addCarrinho(1l, id);
+	public ResponseEntity<Page<ListaItensDTO>> adicionarAoCarrinho(@PathVariable Long id, @PathParam("idItem") Long idItem){
+		 var itens = servC.addCarrinho(id, idItem);
 		 
 		 return ResponseEntity.ok(itens.map(ListaItensDTO::new));
 	}
-	
-	@PostMapping("/comprar")
+	@PostMapping("/comprar/{id}")
 	@Transactional
-	public ResponseEntity<Page<ListaItensDTO>> comprar(){
-		 var itens = servC.comprar(1l);
+	public ResponseEntity<Page<ListaItensDTO>> comprar(@PathVariable Long id){
+		 var itens = servC.comprar(id);
 		 
 		 return ResponseEntity.ok(itens.map(ListaItensDTO::new));
 	}
-	
 	
 }
